@@ -6,9 +6,15 @@ export const fetchPostAndUsers = () => async (dispatch, getState) => {
   console.log('above Fetch data');
   await dispatch(fetchData());
   console.log('Response Data');
-  const userId = _.uniq(_.map(getState().post, 'userId'));
+  // const userId = _.uniq(_.map(getState().post, 'userId'));
 
-  userId.forEach((id) => dispatch(fetchUser(id)));
+  // userId.forEach((id) => dispatch(fetchUser(id)));
+  // use chain
+  _.chain(getState().post)
+    .map('userId')
+    .uniq()
+    .forEach((id) => dispatch(fetchUser(id)))
+    .value();
 };
 
 export const fetchData = () => async (dispatch) => {
